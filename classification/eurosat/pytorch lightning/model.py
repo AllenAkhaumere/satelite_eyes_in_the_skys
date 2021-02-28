@@ -15,7 +15,7 @@ from pytorch_lightning import LightningDataModule
 from pytorch_lightning.callbacks.finetuning import BaseFinetuning
 from pytorch_lightning.utilities import rank_zero_info
 
-def SnapModelResNet50(num_classes, pretrained):
+def SatResNet50(num_classes, pretrained):
 
     model = models.resnet50(pretrained=pretrained)
     for name, param in model.named_parameters():
