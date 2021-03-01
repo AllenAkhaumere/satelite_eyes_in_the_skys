@@ -12,6 +12,7 @@ import pytorch_lightning as pl
 from pl_examples import cli_lightning_logo
 from pytorch_lightning import _logger as log
 from pytorch_lightning import LightningDataModule
+from pytorch_lightning.metrics.functional import accuracy
 from pytorch_lightning.callbacks.finetuning import BaseFinetuning
 from pytorch_lightning.utilities import rank_zero_info
 
@@ -29,7 +30,7 @@ def SatResNet50(num_classes, pretrained):
     return model
 
 class LitResnet(pl.LightningModule):
-    def __init__(self, lr=0.05, num_classes):
+    def __init__(self, num_classes, lr=0.05):
         super().__init__()
 
         self.save_hyperparameters()
@@ -52,7 +53,7 @@ class LitResnet(pl.LightningModule):
         loss = F.nll_loss(logits, y)
         preds = torch.argmax(logits, dim=1)
         acc = accuracy(preds, y)
-         if stage:
+        if stage:
             self.log(f'{stage}_loss', loss, prog_bar=True)
             self.log(f'{stage}_acc', acc, prog_bar=True)
 
